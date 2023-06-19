@@ -113,6 +113,9 @@ pub struct Container {
 
 #[derive(Default, Deserialize, Serialize, Debug, Clone, PartialEq)]
 pub struct VirtualMachine {
+    #[serde(default, rename = "Version", skip_serializing_if = "is_default")]
+    pub vm_version: Option<virtual_machines::VmVersion>,
+
     #[serde(default, rename = "StopOnReset", skip_serializing_if = "is_default")]
     pub stop_on_reset: bool,
 
@@ -127,6 +130,9 @@ pub struct VirtualMachine {
 
     #[serde(default, rename = "GuestState", skip_serializing_if = "is_default")]
     pub guest_state: Option<virtual_machines::GuestState>,
+
+    #[serde(default, rename = "SecuritySettings", skip_serializing_if = "is_default")]
+    pub security_settings: Option<virtual_machines::SecuritySettings>,
 
     #[serde(default, rename = "RestoreState", skip_serializing_if = "is_default")]
     pub restore_state: Option<virtual_machines::RestoreState>,

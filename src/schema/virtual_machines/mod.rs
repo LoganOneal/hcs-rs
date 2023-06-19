@@ -157,6 +157,14 @@ pub struct DebugOptions {
     pub bugcheck_saved_state_file_name: String,
 }
 
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+pub struct VmVersion {
+    #[serde(rename = "Major")]
+    pub major: u32,
+    #[serde(rename = "Minor")]
+    pub minor: u32,
+}
+
 #[derive(Default, Deserialize, Serialize, Debug, Clone, PartialEq)]
 pub struct GuestState {
     /// The path to an existing file uses for persistent guest state storage.
@@ -185,6 +193,66 @@ pub struct GuestState {
         skip_serializing_if = "is_default"
     )]
     pub force_transient_state: bool,
+
+    #[serde(
+        default,
+        rename = "GuestStateFileType",
+        skip_serializing_if = "is_default"
+    )]
+    pub guest_state_file_type: String,
+}
+
+impl std::default::Default for IsolationType {
+    fn default() -> Self {
+        IsolationType::SecureNestedPaging
+    }
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+pub enum IsolationType {
+    None,
+    GuestStateOnly,
+    VirtualizationBasedSecurity,
+    SecureNestedPaging,
+    SecureNestedPagingEmulation
+}
+
+#[derive(Default, Deserialize, Serialize, Debug, Clone, PartialEq)]
+pub struct Isolation {
+    #[serde(default, rename = "IsolationType")]
+    pub isolation_type: IsolationType,
+
+    #[serde(default, rename = "DebugHost", skip_serializing_if = "is_default")]
+    pub debug_host: String,
+
+    #[serde(default, rename = "DebugPort", skip_serializing_if = "is_default")]
+    pub debug_port: u32,
+
+    #[serde(default, rename = "LaunchData", skip_serializing_if = "is_default")]
+    pub launch_data: String,
+
+    #[serde(default, rename = "IgvmFilePath", skip_serializing_if = "is_default")]
+    pub imgvm_file_path: String,
+
+    #[serde(default, rename = "HclEnabled", skip_serializing_if = "is_default")]
+    pub hcl_enabled: bool,
+}
+
+#[derive(Default, Deserialize, Serialize, Debug, Clone, PartialEq)]
+pub struct SecuritySettings {
+    #[serde(
+        default,
+        rename = "EnableTpm",
+        skip_serializing_if = "is_default"
+    )]
+    pub enable_tpm: bool,
+
+    #[serde(
+        default,
+        rename = "Isolation",
+        skip_serializing_if = "is_default"
+    )]
+    pub isolation: Option<Isolation>,
 }
 
 #[derive(Default, Deserialize, Serialize, Debug, Clone, PartialEq)]
