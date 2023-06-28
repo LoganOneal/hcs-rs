@@ -204,7 +204,7 @@ pub struct GuestState {
 
 impl std::default::Default for IsolationType {
     fn default() -> Self {
-        IsolationType::SecureNestedPaging
+        IsolationType::None
     }
 }
 

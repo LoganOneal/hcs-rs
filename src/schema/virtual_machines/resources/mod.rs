@@ -69,6 +69,14 @@ pub struct Uefi {
 
     #[serde(
         default,
+        rename = "ApplySecureBootTemplate",
+        skip_serializing_if = "is_default"
+    )]
+    pub apply_secure_boot_template_id: String,
+
+
+    #[serde(
+        default,
         rename = "SecureBootTemplateId",
         skip_serializing_if = "is_default"
     )]
